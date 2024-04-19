@@ -1,81 +1,44 @@
-﻿using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows;
+namespace ThreadAsyncProjectUI;
 
-namespace ThreadAsyncProjectUI
+public partial class MainWindow : Window
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
+    public MainWindow()
     {
-        private int number;
-        private int milliseconds;
-        private bool stop;
-        public MainWindow()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+    }
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
-        {
-            //Thread thread = new Thread(ShowMessage);
-            //thread.Start();
-            stop = !stop;
-        }
+    private async void Button_Click(object sender, RoutedEventArgs e)
+    {
+        await RunRaceAsync();
+    }
 
-        private async Task StartTimer()
-        {
-            while (true)
-            {
-                await Task.Delay(1000);
-                if (stop) continue;
-                number++;
-                textBlock.Text = number.ToString();
-            }
-        }
+    private async Task RunRaceAsync()
+    {
+        Random random1 = new Random();
+        Random random2 = new Random();
 
-        private async Task StartTimer2()
-        {
-            while (true)
-            {
-                await Task.Delay(10);
-                if (stop) continue;
-                milliseconds++;
-                textBlock2.Text = milliseconds.ToString();
-                if (milliseconds == 100) milliseconds = 0;
-            }
-        }
+        horse1.Value = 0;
+        horse2.Value = 0;
 
-        async Task ShowMessageAsync()
+        while (horse1.Value < 100 && horse2.Value < 100)
         {
+            int step1 = random1.Next(1, 10);
+            int step2 = random2.Next(1, 10);
+
+            horse1.Value += step1;
+            horse2.Value += step2;
+
             await Task.Delay(1000);
-            button.Content = "Thread works";
         }
 
-        private async void startButton_Click(object sender, RoutedEventArgs e)
-        {
-            StartTimer();
-            await StartTimer2();
-        }
-
-        //void ShowMessage()
-        //{
-        //    Thread.Sleep(5000);
-        //    Dispatcher.Invoke(() =>
-        //    {
-        //        button.Content = "Thread works";
-        //    });
-        //}
-
-
-        //
+        if (horse1.Value >= 100 && horse2.Value >= 100)
+            lb_1.Content = "The winner: Horse 1!";
+        else if (horse1.Value >= 100)
+            lb_1.Content = "Horse #1 wins!";
+        else
+            lb_1.Content = "Horse #2 wins!";
     }
 }
+
+

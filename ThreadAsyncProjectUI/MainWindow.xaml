@@ -5,9 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ThreadAsyncProjectUI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800" Background="#F6F5F2" FontFamily="Poppins" FontSize="28">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
@@ -15,31 +17,20 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBlock x:Name="textBlock"
-               Grid.Column="0"
-               FontSize="64"
-               Text="0"
-               HorizontalAlignment="Center"
-               VerticalAlignment="Center"/>
-        <TextBlock x:Name="textBlock2"
-       Grid.Column="1"
-       FontSize="64"
-       Text="0"
-       HorizontalAlignment="Center"
-       VerticalAlignment="Center"/>
-        <Button Margin="100 50"
-            Grid.Row="1"
-            Grid.Column="0"
-            x:Name="button"
-            Content="Stop"
-            FontSize="24"
-            Click="Button_Click"/>
-        <Button Margin="100 50"
-    Grid.Row="1"
-    Grid.Column="1"
-    x:Name="startButton"
-    Content="Start"
-    FontSize="24"
-    Click="startButton_Click"/>
+
+        <Label x:Name="lb_1" Content = "HOURSE RACING" Grid.ColumnSpan="2" FontFamily="Arial" FontSize="34" 
+               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+        <Label Content="Horse #1" Grid.Row="1" 
+               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <ProgressBar x:Name="horse1" Grid.Row="1" Margin="80 30" Background="#FFEFEF" Grid.Column="2" Foreground="#F3D0D7"/>
+        
+        <Label Content="Horse #2" Grid.Row="2" 
+               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <ProgressBar x:Name="horse2" Grid.Row="2" Margin="80 30" Background="#FFEFEF" Grid.Column="2" Foreground="#F3D0D7"/>
+
+        <Button x:Name="button" Grid.Row="3" Content="START" Grid.ColumnSpan="2"
+                FontSize="34" Width="200" Height="80"
+                Background="#F3D0D7" Click="Button_Click" />
     </Grid>
 </Window>
