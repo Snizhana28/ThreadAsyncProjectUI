@@ -1,81 +1,65 @@
-﻿using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows;
 
-namespace ThreadAsyncProjectUI
+namespace ThreadAsyncProjectUI;
+
+public partial class MainWindow : Window
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
+    private int[] array = new int[10];
+
+    public MainWindow()
     {
-        private int number;
-        private int milliseconds;
-        private bool stop;
-        public MainWindow()
+        InitializeComponent();
+        InitializeArray();
+    }
+
+    private void InitializeArray()
+    {
+        Random rnd = new Random();
+        for (int i = 0; i < array.Length; i++)
         {
-            InitializeComponent();
+            array[i] = rnd.Next(0, 50);
         }
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        foreach (int i in array)
         {
-            //Thread thread = new Thread(ShowMessage);
-            //thread.Start();
-            stop = !stop;
+            arr.Text += i.ToString() + " ";
         }
+    }
 
-        private async Task StartTimer()
+    private async void button_Click(object sender, RoutedEventArgs e)
+    {
+        if (int.TryParse(tb.Text, out int value))
         {
-            while (true)
-            {
-                await Task.Delay(1000);
-                if (stop) continue;
-                number++;
-                textBlock.Text = number.ToString();
-            }
+            await SortArray();
+            await SearchArray(value);
         }
+        else
+            MessageBox.Show("Please enter a valid number.");
+    }
 
-        private async Task StartTimer2()
+    private async Task SortArray()
+    {
+        await Task.Run(() =>
         {
-            while (true)
-            {
-                await Task.Delay(10);
-                if (stop) continue;
-                milliseconds++;
-                textBlock2.Text = milliseconds.ToString();
-                if (milliseconds == 100) milliseconds = 0;
-            }
-        }
-
-        async Task ShowMessageAsync()
+            Array.Sort(array);
+        });
+        sortedArr.Text += "Sorted array: ";
+        foreach (int i in array)
         {
-            await Task.Delay(1000);
-            button.Content = "Thread works";
+            sortedArr.Text += i.ToString() + " ";
         }
+    }
 
-        private async void startButton_Click(object sender, RoutedEventArgs e)
+    private async Task SearchArray(int value)
+    {
+        int index = await Task.Run(() =>
         {
-            StartTimer();
-            await StartTimer2();
-        }
+            return Array.BinarySearch(array, value);
+        });
 
-        //void ShowMessage()
-        //{
-        //    Thread.Sleep(5000);
-        //    Dispatcher.Invoke(() =>
-        //    {
-        //        button.Content = "Thread works";
-        //    });
-        //}
-
-
-        //
+        if (index >= 0)
+            sortedArr.Text += $"\nIndex: {index}";
+        else
+            sortedArr.Text += "\nNumber not found in the sorted array.";
     }
 }
